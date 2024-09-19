@@ -15,7 +15,7 @@
       </div>
 
       <!-- splash page -->
-      <div class="card" id="splash-page" hidden>
+      <div class="card" id="splash-page" >
         <form id="start-form">
           <div class="selection-container">
             <!-- 10 questions radio input -->
@@ -56,19 +56,46 @@
             </div>
           </div>
 
-        <!-- start button -->
-         <div class="selection-footer">
+          <!-- start button -->
+          <div class="selection-footer">
             <button class="start" type="submit">Start Round</button>
-         </div>
+          </div>
         </form>
       </div>
 
       <!-- countdown page -->
-       <div class="card" id="countdown-page">
+      <div class="card" id="countdown-page" hidden>
         <h1 class="countdown">3</h1>
-       </div>
+      </div>
 
-       
+      <!-- game page -->
+      <div class="card" id="game-page" hidden>
+        <!-- item contaner -->
+        <div class="item-container">
+          <div class="selected-item"></div>
+          <!-- equations -->
+        </div>
+        <!-- right/wrong buttons -->
+        <div class="item-footer">
+          <button class="wrong">Wrong</button>
+          <button class="right">Right</button>
+        </div>
+      </div>
+
+      <!-- score page -->
+      <div class="card" id="score-page" hidden>
+        <!-- score contaienr -->
+        <div class="score-container">
+          <h1 class="title">Your Time</h1>
+          <h1 class="final-time">3.4s</h1>
+          <h1 class="base-time">Base Time: 2.4s</h1>
+          <h1 class="penalty-time">Penalty: +1.0s</h1>
+        </div>
+        <!-- play again button -->
+        <div class="score-footer">
+          <button class="play-again">Play again</button>
+        </div>
+      </div>
     </div>
 
     <!-- Script -->
