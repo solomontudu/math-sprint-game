@@ -22,6 +22,8 @@ const playAgainBtn = document.querySelector(".play-again");
 let questionAmount = 0;
 let equationsArray = [];
 let playerGuessArray = [];
+let bestScore = {};
+let selectedOption = 0;
 
 // Game Page
 let firstNumber = 0;
@@ -40,9 +42,45 @@ let finalTimeDisplay = "0.0s";
 // Scroll
 let valueY = 0;
 
+// store the best score in localstorage
+function storeBestScore(finalScore = 0) {
+  // if the parametre is 0 than the game just loaded and is being played for the first time
+  if (!localStorage.getItem("bestScore")) {
+    // store the bestScore for the first time
+    localStorage.setItem(
+      "bestScore",
+      JSON.stringify({ score: finalScore, option: selectedOption })
+    );
+  } else {
+    if (localStorage.getItem("bestScore") < finalScore) {
+      localStorage.setItem(
+        JSON.stringify({ score: finalScore, option: selectedOption })
+      );
+    }
+  }
+}
+
+// restore bestScore when game is reset or the site is re-visited
+function restoreBestScore() {
+  if (localStorage.getItem("bestScore")) {
+    bestScore = localStorage.getItem("bestScore");
+  }
+}
+
+// show score page
+function showScorePage(finalTime, baseTime, penaltyTime) {
+  gamePage.hidden = true;
+  scorePage.hidden = false;
+  finalTimeEl.textContent = `${Math.floor(finalTime).toFixed(1)}s`;
+  baseTimeEl.textContent = `${Math.floor(baseTime).toFixed(1)}s`;
+  penaltyTimeEl.textContent = `+${penaltyTime}s`;
+  storeBestScore(Math.floor(finalTime).toFixed(1));
+}
+
 // stop timer, process results, goto scorepage
 function checkTime() {
   console.log("time played:", timePlayed);
+
   if (playerGuessArray.length == questionAmount) {
     console.log("plaer guess array:", playerGuessArray);
     clearInterval(timer);
@@ -55,6 +93,7 @@ function checkTime() {
         penaltyTime += 0.5;
       }
     });
+
     finalTime = timePlayed + penaltyTime;
     console.log(
       "time:",
@@ -64,6 +103,7 @@ function checkTime() {
       "final:",
       finalTime
     );
+    showScorePage(finalTime, timePlayed, penaltyTime);
   }
 }
 
@@ -227,6 +267,7 @@ startForm.addEventListener("click", () => {
     // added the selected  label styling if it is checked
     if (radioEl.children[1].checked) {
       radioEl.classList.add("selected-label");
+      selectedOption = radioEl.children[1].value;
     }
   });
 });
@@ -234,3 +275,4 @@ startForm.addEventListener("click", () => {
 // event listener
 startForm.addEventListener("submit", selectQuestionAmount);
 gamePage.addEventListener("click", startTimer);
+restoreBestScore();
