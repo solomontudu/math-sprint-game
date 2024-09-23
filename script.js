@@ -17,6 +17,7 @@ const finalTimeEl = document.querySelector(".final-time");
 const baseTimeEl = document.querySelector(".base-time");
 const penaltyTimeEl = document.querySelector(".penalty-time");
 const playAgainBtn = document.querySelector(".play-again");
+const equationContainer = document.querySelector(".selected-item");
 
 // Equations
 let questionAmount = 0;
@@ -77,8 +78,6 @@ function restoreBestScore() {
     }
   });
 }
-
-// TODO: show the bestscore in the splash screen
 
 // show score page
 function showScorePage(finalTime, baseTime, penaltyTime) {
@@ -182,6 +181,7 @@ function createEquations() {
 
 // add equations to DOM
 function equationsToDOM() {
+  equationContainer.textContent = "";
   equationsArray.forEach((equation) => {
     // item
     const item = document.createElement("div");
@@ -234,6 +234,7 @@ function getRadioValue() {
 const countdownStart = () => {
   countdown.textContent = 3;
   let counter = 3;
+  console.log("inside countDown");
   setInterval(() => {
     if (counter > 0) {
       countdown.textContent = counter;
@@ -249,6 +250,7 @@ const countdownStart = () => {
 function showCountdown() {
   splashPage.hidden = true;
   countdownPage.hidden = false;
+
   countdownStart();
   populateGamePage();
   setTimeout(showGamePage, 400);
@@ -259,6 +261,11 @@ function selectQuestionAmount(e) {
   e.preventDefault();
   questionAmount = getRadioValue();
   if (questionAmount) showCountdown();
+}
+
+// play again button
+function reset() {
+  location.reload();
 }
 
 // event listener
@@ -276,4 +283,6 @@ startForm.addEventListener("click", () => {
 
 startForm.addEventListener("submit", selectQuestionAmount);
 gamePage.addEventListener("click", startTimer);
+playAgainBtn.addEventListener("click", reset);
+
 restoreBestScore();
