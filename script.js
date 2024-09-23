@@ -49,8 +49,6 @@ let valueY = 0;
 
 // store the best score in localstorage
 function storeBestScore(score = 0, option) {
-  console.log(score, option);
-  console.log(bestScore[option]);
   // if the parametre is 0 than the game just loaded and is being played for the first time
   if (bestScore[option] === 0) {
     bestScore = { ...bestScore, [option]: score };
@@ -66,15 +64,16 @@ function storeBestScore(score = 0, option) {
 
 // restore bestScore when game is reset or the site is re-visited
 function restoreBestScore() {
+  // if there is score stored in localStorage then we have to reinstate in the correct locations
   if (localStorage.getItem("bestScore")) {
     bestScore = JSON.parse(localStorage.getItem("bestScore"));
-    // bestScore = localStorage.getItem("bestScore");
-    console.log(bestScore);
   }
-
-  radioContainers.forEach((radioEl) => {
-    if (radioEl.children[1].value === bestScore.option) {
-      radioEl.children[2].children[1].textContent = bestScore.option;
+  // if there is a previous best score stored for a particular option then it will be populated
+  bestScores.forEach((el) => {
+    if (bestScore[el.getAttribute("data-val")] != 0) {
+      el.textContent = `${Math.floor(
+        bestScore[el.getAttribute("data-val")]
+      ).toFixed(1)}s`;
     }
   });
 }
@@ -137,7 +136,6 @@ function select(guessedTrue) {
   // add player guess to array
   guessedTrue ? playerGuessArray.push(true) : playerGuessArray.push(false);
   checkTime();
-  console.log("guessArray:", playerGuessArray);
 }
 
 // display game page
